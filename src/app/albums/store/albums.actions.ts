@@ -21,7 +21,7 @@ export const addAlbumSuccess = createAction(
   '[Albums] Add Album Success',
   props<{ album: Album }>()
 );
-export const addTodoFailure = createAction(
+export const addAlbumFailure = createAction(
   '[Albums] Add Album Failure',
   props<{ error: string }>()
 );
@@ -54,9 +54,9 @@ export const rateAlbumFailure = createAction(
   props<{ error: string }>()
 );
 
-// Remove
+// Delete
 export const deleteAlbum = createAction(
-  '[Albums] Delete Todo',
+  '[Albums] Delete Album',
   props<{ id: string }>()
 );
 export const deleteAlbumSuccess = createAction(
