@@ -5,6 +5,7 @@ import { provideEffects } from '@ngrx/effects';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
 import { routes } from './app.routes';
 import { ALBUMS_FEATURE_KEY, albumsReducer } from './albums/store/albums.reducer';
+import { AlbumsEffects } from './albums/store/albums.effects';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -13,7 +14,7 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideStore(),
     provideState(ALBUMS_FEATURE_KEY, albumsReducer),
-    provideEffects([TodosEffects]),
+    provideEffects([AlbumsEffects]),
     provideStoreDevtools({
       maxAge: 25,
       trace: false,
