@@ -5,7 +5,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { selectCounts, selectListeningAlbums, selectRatedAlbums, selectLatestAlbums, selectAlbumsError } from '../../store/albums.selectors';
+import { selectCounts, selectListeningAlbums, selectRatedAlbums, selectLatestAlbums, selectAlbumsError, selectAlbumsState } from '../../store/albums.selectors';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatListModule } from '@angular/material/list';
 import { AsyncPipe, DatePipe } from '@angular/common';
@@ -36,7 +36,8 @@ export class AlbumsListComponent implements OnInit {
     this._store.dispatch(loadAlbums());
   }
 
-  public updateStatus(id: string, status: AlbumStatus) {
+  public updateStatus(id: string) {
+    const status = 'done' as AlbumStatus;
     this._store.dispatch(updateStatus({ id, status }));
   }
 

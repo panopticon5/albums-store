@@ -1,14 +1,13 @@
 import { inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, map, mergeMap, of, switchMap } from 'rxjs';
+import { catchError, map, of, switchMap } from 'rxjs';
 import { AlbumsService } from '../../core/albums.service';
 import { addAlbum, addAlbumFailure, addAlbumSuccess, deleteAlbum, deleteAlbumFailure, deleteAlbumSuccess, loadAlbums, loadAlbumsFailure, loadAlbumsSuccess, rateAlbum, rateAlbumFailure, rateAlbumSuccess, updateStatus, updateStatusFailure, updateStatusSuccess } from './albums.actions';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class AlbumsEffects {
   private _actions$ = inject(Actions);
   private _api = inject(AlbumsService);
-//   constructor(private actions$: Actions, private api: AlbumsService) {}
 
   public load$ = createEffect(() =>
     this._actions$.pipe(

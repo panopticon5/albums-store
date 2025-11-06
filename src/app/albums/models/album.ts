@@ -1,7 +1,7 @@
-export type AlbumStatus = 'queued' | 'listening' | 'done';
+export type AlbumStatus = 'listening' | 'done';
 
 export interface Album {
-  id: number;          // e.g., uuid
+  id: string;          // e.g., uuid
   title: string;
   releaseDate: string;
   status: AlbumStatus;

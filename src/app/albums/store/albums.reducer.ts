@@ -12,8 +12,7 @@ import {
 } from './albums.actions';
 import {
   createEntityAdapter,
-  EntityState,
-  Update,
+  EntityState
 } from '@ngrx/entity';
 import { Album } from '../models/album';
 
@@ -25,7 +24,7 @@ export interface AlbumsState extends EntityState<Album> {
 }
 
 export const adapter = createEntityAdapter<Album>({
-  selectId: (t) => t.id,
+  selectId: (a) => a.id,
   sortComparer: (a, b) => b.releaseDate.localeCompare(a.releaseDate), // newest first
 });
 
@@ -45,7 +44,7 @@ export const albumsReducer = createReducer(
   on(loadAlbumsFailure, (state, { error }) => ({ ...state, loading: false, error })),
 
   // Add
-  on(addAlbum, (state, { title }) => adapter.addOne({ id: 5, title, releaseDate: '', rating: null, status: 'queued'  }, state)),
+  on(addAlbum, (state, { title }) => adapter.addOne({ id: '', title, releaseDate: '', rating: null, status: 'listening'  }, state)),
 
   // Update status
   on(updateStatus, (state, { id, status }) => adapter.updateOne({ id, changes: { status } }, state)),

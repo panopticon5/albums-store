@@ -1,0 +1,30 @@
+:host {
+  display: block;
+}
+
+.counts {
+  margin: 8px 0 16px;
+}
+
+mat-list-item {
+  gap: 12px;
+}
+
+.title {
+  flex: 1;
+}
+
+.title.done {
+  text-decoration: line-through;
+  opacity: 0.7;
+}
+
+.sub {
+  font-size: 11px;
+  opacity: 0.75;
+}
+
+h3 {
+  margin: 16px 0 8px;
+  font-weight: 600;
+}

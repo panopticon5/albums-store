@@ -1,0 +1,57 @@
+@if (loading$ | async) {
+  <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+}
+
+@if (counts$ | async; as count) {
+<div class="counts">
+  <strong>Total:</strong> {{ count.total }} • <strong>Active:</strong> {{ count.active }} •
+  <strong>Completed:</strong> {{ count.done }}
+</div>
+}
+
+
+<h3>Listening</h3>
+<mat-list role="list">
+    @for (album of listeningAlbums$ | async; track album.id) {
+        <mat-list-item role="listitem">
+            <mat-checkbox
+            (change)="updateStatus(album.id)"
+            [disableRipple]="true"
+            matTooltip="Mark done"
+            ></mat-checkbox>
+
+            <div class="title">
+                {{ album.title }}
+                <div class="sub">Released on {{ album.releaseDate | date : 'mediumDate' }}</div>
+            </div>
+
+            <button mat-icon-button color="accent" aria-label="Rate" (click)="rate(album.id, 5)">
+                <mat-icon>star</mat-icon>
+            </button>
+
+            <button mat-icon-button color="warn" aria-label="Delete" (click)="remove(album.id)">
+            <mat-icon>delete</mat-icon>
+            </button>
+        </mat-list-item>
+    }
+</mat-list>
+
+<mat-divider></mat-divider>
+
+
+<h3>Rated</h3>
+<mat-list role="list">
+    @for (album of ratedAlbums$ | async; track album.id) {
+        <mat-list-item role="listitem">
+
+            <div class="title">
+                {{ album.title }}
+                <div class="sub">Released on {{ album.releaseDate | date : 'mediumDate' }}</div>
+            </div>
+
+            <button mat-icon-button color="warn" aria-label="Delete" (click)="remove(album.id)">
+            <mat-icon>delete</mat-icon>
+            </button>
+        </mat-list-item>
+    }
+</mat-list>
