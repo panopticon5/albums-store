@@ -2,16 +2,17 @@ import { Component, OnInit, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { selectCounts, selectListeningAlbums, selectRatedAlbums, selectLatestAlbums, selectAlbumsError, selectAlbumsState } from '../../store/albums.selectors';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { MatListModule } from '@angular/material/list';
 import { AsyncPipe, DatePipe } from '@angular/common';
 import { selectAlbumsLoading } from '../../store/albums.selectors';
 import { deleteAlbum, loadAlbums, rateAlbum, updateStatus } from '../../store/albums.actions';
-import { AlbumStatus } from '../../models/album';
+import { Album, AlbumStatus } from '../../models/album';
+import { MatDialog } from '@angular/material/dialog';
+import { RateDialog } from '../rate-dialog/rate-dialog.component';
+import { filter, tap } from 'rxjs';
 
 @Component({
   selector: 'albums-list',
@@ -24,6 +25,7 @@ import { AlbumStatus } from '../../models/album';
 })
 export class AlbumsListComponent implements OnInit {
   private _store = inject(Store);
+  private _dialog = inject(MatDialog);
 
   public loading$ = this._store.select(selectAlbumsLoading);
   public counts$ = this._store.select(selectCounts);
@@ -34,6 +36,19 @@ export class AlbumsListComponent implements OnInit {
 
   public ngOnInit(): void {
     this._store.dispatch(loadAlbums());
+  }
+
+  public openRateDialog(album: Album): void {
+    const dialogRef = this._dialog.open(RateDialog, {
+      data: { album },
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('Rating received from dialog:', result);
+      if(result) {
+        console.log('Rate submitted');
+      }
+    });
   }
 
   public updateStatus(id: string) {
