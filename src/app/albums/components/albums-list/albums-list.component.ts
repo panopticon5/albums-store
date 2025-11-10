@@ -17,7 +17,7 @@ import { AlbumStatus } from '../../models/album';
   selector: 'albums-list',
   imports: [
     AsyncPipe, DatePipe,
-    MatListModule, MatCheckboxModule, MatIconModule, MatButtonModule, MatProgressBarModule, MatDividerModule, MatTooltipModule
+    MatIconModule, MatButtonModule, MatProgressBarModule, MatDividerModule, MatTooltipModule
   ],
   templateUrl: './albums-list.component.html',
   styleUrl: './albums-list.component.scss'
