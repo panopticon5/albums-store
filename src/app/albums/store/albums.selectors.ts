@@ -27,7 +27,7 @@ export const selectCounts = createSelector(
   selectAlbumsAll,
   (albums) => {
     const total = albums.length;
-    const done = albums.filter((album) => album.status === 'done').length;
-    return { total, done, active: total - done };
+    const rated = albums.filter((album) => album.status === 'done').length;
+    return { total, rated, unrated: total - rated };
   }
 );

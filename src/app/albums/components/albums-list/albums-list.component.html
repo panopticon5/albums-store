@@ -4,8 +4,8 @@
 
 @if (counts$ | async; as count) {
 <div class="counts">
-  <strong>Total:</strong> {{ count.total }} • <strong>Active:</strong> {{ count.active }} •
-  <strong>Completed:</strong> {{ count.done }}
+  <strong>Total:</strong> {{ count.total }} • <strong>Active:</strong> {{ count.unrated }} •
+  <strong>Completed:</strong> {{ count.rated }}
 </div>
 }
 
@@ -30,7 +30,7 @@
             </button>
 
             <button mat-icon-button color="warn" aria-label="Delete" (click)="remove(album.id)">
-            <mat-icon>delete</mat-icon>
+                <mat-icon>delete</mat-icon>
             </button>
         </mat-list-item>
     }
