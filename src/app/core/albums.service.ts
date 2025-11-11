@@ -23,27 +23,27 @@ export class AlbumsService {
     return of(album).pipe(delay(250));
   }
 
-  public updateStatus(id: string, status: AlbumStatus): Observable<{ id: string; changes: Partial<Album> }> {
-    const albumIndex = this._data.findIndex(a => a.id === id);
-    if (albumIndex === -1) return throwError(() => new Error('Album not found'));
-    const changes = { status };
-    this._data[albumIndex] = { ...this._data[albumIndex], ...changes };
-    return of({ id, changes }).pipe(delay(200));
+  public updateStatus(payload: {id: string; status: AlbumStatus}): Observable<{ id: string; changes: Partial<Album> }> {
+    const selectedAlbum = this._data.find(a => a.id === payload.id);
+    if (!selectedAlbum) return throwError(() => new Error('Album not found'));
+    const changes: Partial<Album> = { status: payload.status };
+    this._data = this._data.map((a) => (a.id === selectedAlbum.id ? { ...a, ...changes } : a));
+    return of({ id: payload.id, changes }).pipe(delay(200));
   }
 
-  public rate(id: string, rating: number): Observable<{ id: string; changes: Partial<Album> }> {
-    const albumIndex = this._data.findIndex(a => a.id === id);
-    if (albumIndex === -1) return throwError(() => new Error('Album not found'));
-    const changes = { rating };
-    this._data[albumIndex] = { ...this._data[albumIndex], ...changes };
-    return of({ id, changes }).pipe(delay(200));
+  public rate(payload: {id: string; rating: number}): Observable<{ id: string; changes: Partial<Album> }> {
+    const selectedAlbum = this._data.find(a => a.id === payload.id);
+    if (!selectedAlbum) return throwError(() => new Error('Album not found'));
+    const changes: Partial<Album> = { rating: payload.rating };
+    this._data = this._data.map((a) => (a.id === selectedAlbum.id ? { ...a, ...changes } : a));
+    return of({ id: payload.id, changes }).pipe(delay(200));
   }
 
-  public delete(id: string): Observable<{ id: string }> {
-    const albumIndex = this._data.findIndex(a => a.id === id);
-    if (albumIndex === -1) return throwError(() => new Error('Album not found'));
-    this._data.splice(albumIndex, 1);
-    return of({ id }).pipe(delay(200));
+  public delete(payload: {id: string}): Observable<{ id: string }> {
+    const selectedAlbum = this._data.find(a => a.id === payload.id);
+    if (!selectedAlbum) return throwError(() => new Error('Album not found'));
+    this._data = this._data.filter((a) => (a.id !== selectedAlbum.id));
+    return of({ id: payload.id }).pipe(delay(200));
   }
 
   private _generateAlbum(artist: string, title: string, releaseDate?: string): Album {
@@ -59,9 +59,7 @@ export class AlbumsService {
 
   private _generateNumericUUID(): string {
     const timestamp = Date.now();
-    
     const randomDigits = Math.floor(Math.random() * 10000);
-    
-    return Number(`${timestamp}${randomDigits.toString().padStart(4, '0')}`).toString();
+    return `${timestamp}${randomDigits.toString().padStart(4, '0')}`;
   }
 }

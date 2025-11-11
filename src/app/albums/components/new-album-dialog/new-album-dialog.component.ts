@@ -42,7 +42,6 @@ export class NewAlbumDialogComponent {
   }
 
   public onAddClick(): void {
-    console.log('Adding album', this.releaseDateCtrl.value);
-    // this._dialogRef.close({ artist: this.artistCtrl.value, title: this.titleCtrl.value, releaseDate: this.releaseDateCtrl.value });
+    this._dialogRef.close({ artist: this.artistCtrl.value, title: this.titleCtrl.value, releaseDate: this.releaseDateCtrl.value });
   }
 }

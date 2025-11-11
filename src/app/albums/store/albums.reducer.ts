@@ -1,14 +1,12 @@
 import { createReducer, on } from '@ngrx/store';
 import {
-    addAlbum,
   addAlbumSuccess,
   deleteAlbum,
-  deleteAlbumSuccess,
   loadAlbums,
   loadAlbumsFailure,
   loadAlbumsSuccess,
-  rateAlbum,
-  updateStatus,
+  rateAlbumSuccess,
+  updateStatusSuccess,
 } from './albums.actions';
 import {
   createEntityAdapter,
@@ -44,13 +42,13 @@ export const albumsReducer = createReducer(
   on(loadAlbumsFailure, (state, { error }) => ({ ...state, loading: false, error })),
 
   // Add
-  on(addAlbum, (state, { artist, title, releaseDate }) => adapter.addOne({ id: '', artist, title, releaseDate: releaseDate || new Date().toISOString(), rating: null, status: 'listening'  }, state)),
+  on(addAlbumSuccess, (state, { album }) => adapter.addOne(album, state)),
 
   // Update status
-  on(updateStatus, (state, { id, status }) => adapter.updateOne({ id, changes: { status } }, state)),
+  on(updateStatusSuccess, (state, { id, status }) => adapter.updateOne({ id, changes: { status } }, state)),
 
   // Rate
-  on(rateAlbum, (state, { id, rating }) => adapter.updateOne({ id, changes: { rating } }, state)),
+  on(rateAlbumSuccess, (state, { id, rating }) => adapter.updateOne({ id, changes: { rating } }, state)),
 
   // Remove
   on(deleteAlbum, (state, { id }) => adapter.removeOne(id, state))

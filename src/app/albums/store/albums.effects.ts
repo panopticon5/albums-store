@@ -37,7 +37,7 @@ export class AlbumsEffects {
     this._actions$.pipe(
       ofType(updateStatus),
       switchMap(({ id, status }) =>
-        this._api.updateStatus( id, status ).pipe(
+        this._api.updateStatus({ id, status }).pipe(
           map(({ id }) => updateStatusSuccess({ id, status })),
           catchError((err) => of(updateStatusFailure({ error: err.message ?? 'Update failed' })))
         )
@@ -50,7 +50,7 @@ export class AlbumsEffects {
     this._actions$.pipe(
       ofType(rateAlbum),
       switchMap(({ id, rating }) =>
-        this._api.rate( id, rating ).pipe(
+        this._api.rate({ id, rating }).pipe(
           map(({ id }) => rateAlbumSuccess({ id, rating })),
           catchError((err) => of(rateAlbumFailure({ error: err.message ?? 'Rate failed' })))
         )
@@ -62,7 +62,7 @@ export class AlbumsEffects {
     this._actions$.pipe(
       ofType(deleteAlbum),
       switchMap(({ id }) =>
-        this._api.delete(id).pipe(
+        this._api.delete({id}).pipe(
           map(({ id }) => deleteAlbumSuccess({ id })),
           catchError((err) => of(deleteAlbumFailure({ error: err.message ?? 'Delete failed' })))
         )
