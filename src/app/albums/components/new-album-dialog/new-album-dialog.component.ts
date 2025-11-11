@@ -3,6 +3,8 @@ import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from '@angular/material/input';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {provideNativeDateAdapter} from '@angular/material/core';
 import {
   MatDialogActions,
   MatDialogClose,
@@ -15,6 +17,7 @@ import {
   selector: 'new-album-dialog',
   templateUrl: './new-album-dialog.component.html',
   styleUrl: './new-album-dialog.component.scss',
+  providers: [provideNativeDateAdapter()],
   imports: [
     MatFormFieldModule,
     ReactiveFormsModule,
@@ -23,7 +26,8 @@ import {
     MatDialogTitle,
     MatDialogContent,
     MatDialogActions,
-    MatDialogClose
+    MatDialogClose,
+    MatDatepickerModule
 ],
 })
 export class NewAlbumDialogComponent {

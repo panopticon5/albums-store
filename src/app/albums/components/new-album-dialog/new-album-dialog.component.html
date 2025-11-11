@@ -25,12 +25,9 @@
 
     <mat-form-field appearance="outline">
       <mat-label>Release Date</mat-label>
-      <input matInput [formControl]="releaseDateCtrl" />
-      @if (releaseDateCtrl.invalid && (releaseDateCtrl.dirty || releaseDateCtrl.touched)) {
-          <mat-error>
-          Release Date is required.
-          </mat-error>
-      }
+      <input matInput [matDatepicker]="releaseDateCtrl">
+      <mat-datepicker-toggle matIconSuffix [for]="releaseDateCtrl"></mat-datepicker-toggle>
+      <mat-datepicker #releaseDateCtrl></mat-datepicker>
     </mat-form-field>
   </div>
 </mat-dialog-content>
