@@ -24,8 +24,8 @@ export class AlbumsEffects {
   public add$ = createEffect(() =>
     this._actions$.pipe(
       ofType(addAlbum),
-      switchMap(({ title }) =>
-        this._api.add(title).pipe(
+      switchMap(({ artist, title, releaseDate }) =>
+        this._api.add({ artist, title, releaseDate }).pipe(
           map((album) => addAlbumSuccess({ album })),
           catchError((err) => of(addAlbumFailure({ error: err.message ?? 'Add failed' })))
         )

@@ -1,16 +1,4 @@
-<form (ngSubmit)="submit()" class="album-input">
-  <mat-form-field appearance="outline">
-    <mat-label>Add a new album</mat-label>
-    <input matInput [formControl]="titleCtrl" placeholder="e.g. Sunpocrisy - Samaroid Dioramas" />
-    @if (titleCtrl.invalid && (titleCtrl.dirty || titleCtrl.touched)) {
-        <mat-error>
-        Title is required (min 3).
-        </mat-error>
-    }
-  </mat-form-field>
-
-  <button mat-flat-button color="primary" type="submit" [disabled]="titleCtrl.invalid">
-    <mat-icon>add</mat-icon>
-    Add
-  </button>
-</form>
+<button mat-stroked-button color="primary" (click)="openNewAlbumDialog()" aria-label="Add new album">
+  <mat-icon>add</mat-icon>
+  Add new album
+</button>

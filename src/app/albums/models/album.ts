@@ -2,6 +2,7 @@ export type AlbumStatus = 'listening' | 'done';
 
 export interface Album {
   id: string;          // e.g., uuid
+  artist: string;
   title: string;
   releaseDate: string;
   status: AlbumStatus;

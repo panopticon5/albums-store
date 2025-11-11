@@ -27,10 +27,10 @@ import { Album } from '../../models/album';
     MatDialogClose
 ],
 })
-export class RateDialog {
+export class RateDialogComponent {
   public readonly data = inject<DialogData>(MAT_DIALOG_DATA);
   public readonly rate = model(this.data.album.rating || 0);
-  private _dialogRef = inject(MatDialogRef<RateDialog>);
+  private _dialogRef = inject(MatDialogRef<RateDialogComponent>);
 
   public onNoClick(): void {
     this._dialogRef.close();

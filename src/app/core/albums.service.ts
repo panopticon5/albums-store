@@ -8,15 +8,16 @@ export class AlbumsService {
 
   public getAlbums(): Observable<Album[]> {
     if (this._data.length === 0) {
-      this._data = [0,1,2].map(i => this._generateAlbum(`Album ${i + 1}`));
+      this._data = [0,1,2].map(i => this._generateAlbum(`Artist ${i + 1}`, `Title ${i + 1}`));
     }
     console.log('data from api', this._data);
     return of(this._data).pipe(delay(400));
   }
 
-  public add(title: string): Observable<Album> {
-    if (!title.trim()) return throwError(() => new Error('Title is required'));
-    const album = this._generateAlbum(title);
+  public add(payload: {artist: string; title: string; releaseDate?: string}): Observable<Album> {
+    if (!payload.artist.trim()) return throwError(() => new Error('Artist is required'));
+    if (!payload.title.trim()) return throwError(() => new Error('Title is required'));
+    const album = this._generateAlbum(payload.artist, payload.title, payload.releaseDate);
     this._data = [...this._data, album];
     console.log('data from api after add', this._data);
     return of(album).pipe(delay(250));
@@ -45,13 +46,14 @@ export class AlbumsService {
     return of({ id }).pipe(delay(200));
   }
 
-  private _generateAlbum(title: string): Album {
+  private _generateAlbum(artist: string, title: string, releaseDate?: string): Album {
     return {
       id: this._generateNumericUUID(),
+      artist: artist.trim(),
       title: title.trim(),
       rating: null,
       status: 'listening',
-      releaseDate: new Date().toISOString(),
+      releaseDate: releaseDate ? new Date(releaseDate).toISOString() : new Date().toISOString(),
     };
   }
 

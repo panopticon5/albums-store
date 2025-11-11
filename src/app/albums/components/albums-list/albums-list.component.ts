@@ -11,8 +11,7 @@ import { selectAlbumsLoading } from '../../store/albums.selectors';
 import { deleteAlbum, loadAlbums, rateAlbum, updateStatus } from '../../store/albums.actions';
 import { Album, AlbumStatus } from '../../models/album';
 import { MatDialog } from '@angular/material/dialog';
-import { RateDialog } from '../rate-dialog/rate-dialog.component';
-import { filter, tap } from 'rxjs';
+import { RateDialogComponent } from '../rate-dialog/rate-dialog.component';
 
 @Component({
   selector: 'albums-list',
@@ -39,7 +38,7 @@ export class AlbumsListComponent implements OnInit {
   }
 
   public openRateDialog(album: Album): void {
-    const dialogRef = this._dialog.open(RateDialog, {
+    const dialogRef = this._dialog.open(RateDialogComponent, {
       data: { album },
     });
 

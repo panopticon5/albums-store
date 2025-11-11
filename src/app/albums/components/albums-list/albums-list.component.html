@@ -15,7 +15,7 @@
         @for (album of listeningAlbums$ | async; track album.id) {
             <div class="list-item" role="listitem">
                 <div class="title">
-                    {{ album.title }}
+                    {{ album.artist }} - {{ album.title }}
                     <div class="sub">Released on {{ album.releaseDate | date : 'mediumDate' }}</div>
                 </div>
 

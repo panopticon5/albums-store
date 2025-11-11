@@ -15,7 +15,7 @@ export const loadAlbumsFailure = createAction(
 // Add
 export const addAlbum = createAction(
   '[Albums] Add Album',
-  props<{ title: string }>()
+  props<{ artist: string; title: string; releaseDate?: string }>()
 );
 export const addAlbumSuccess = createAction(
   '[Albums] Add Album Success',
@@ -29,11 +29,11 @@ export const addAlbumFailure = createAction(
 // Update Status
 export const updateStatus = createAction(
   '[Albums] Update Status',
-  props<{ id: string, status: AlbumStatus }>()
+  props<{ id: string; status: AlbumStatus }>()
 );
 export const updateStatusSuccess = createAction(
   '[Albums] Update Status Success',
-  props<{ id: string, status: AlbumStatus }>()
+  props<{ id: string; status: AlbumStatus }>()
 );
 export const updateStatusFailure = createAction(
   '[Albums] Update Status Failure',
@@ -43,7 +43,7 @@ export const updateStatusFailure = createAction(
 // Rate
 export const rateAlbum = createAction(
   '[Albums] Rate Album',
-  props<{ id: string, rating: number }>()
+  props<{ id: string; rating: number }>()
 );
 export const rateAlbumSuccess = createAction(
   '[Albums] Rate Album Success',

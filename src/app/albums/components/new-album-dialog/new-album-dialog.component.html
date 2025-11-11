@@ -1,0 +1,41 @@
+<h3 mat-dialog-title>Add New Album</h3>
+
+<mat-dialog-content>
+  <p>Please fill in all the following fields</p>
+  <div id="forms-container">
+    <mat-form-field appearance="outline">
+      <mat-label>Artist</mat-label>
+      <input matInput [formControl]="artistCtrl"/>
+      @if (artistCtrl.invalid && (artistCtrl.dirty || artistCtrl.touched)) {
+          <mat-error>
+          Artist is required (min 3).
+          </mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Title</mat-label>
+      <input matInput [formControl]="titleCtrl" />
+      @if (titleCtrl.invalid && (titleCtrl.dirty || titleCtrl.touched)) {
+          <mat-error>
+          Title is required (min 3).
+          </mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Release Date</mat-label>
+      <input matInput [formControl]="releaseDateCtrl" />
+      @if (releaseDateCtrl.invalid && (releaseDateCtrl.dirty || releaseDateCtrl.touched)) {
+          <mat-error>
+          Release Date is required.
+          </mat-error>
+      }
+    </mat-form-field>
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button matButton mat-dialog-close cdkFocusInitial>Discard</button>
+  <button mat-flat-button color="primary" (click)="onAddClick()">Add</button>
+</mat-dialog-actions>

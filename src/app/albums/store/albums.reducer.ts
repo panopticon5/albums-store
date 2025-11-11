@@ -44,7 +44,7 @@ export const albumsReducer = createReducer(
   on(loadAlbumsFailure, (state, { error }) => ({ ...state, loading: false, error })),
 
   // Add
-  on(addAlbum, (state, { title }) => adapter.addOne({ id: '', title, releaseDate: '', rating: null, status: 'listening'  }, state)),
+  on(addAlbum, (state, { artist, title, releaseDate }) => adapter.addOne({ id: '', artist, title, releaseDate: releaseDate || new Date().toISOString(), rating: null, status: 'listening'  }, state)),
 
   // Update status
   on(updateStatus, (state, { id, status }) => adapter.updateOne({ id, changes: { status } }, state)),
