@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from "@angular/material/form-field";
@@ -28,12 +28,13 @@ import {
     MatDialogActions,
     MatDialogClose,
     MatDatepickerModule
-],
+  ],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NewAlbumDialogComponent {
   public artistCtrl = new FormControl<string>('', { nonNullable: true, validators: [Validators.required, Validators.minLength(3)] });
   public titleCtrl = new FormControl<string>('', { nonNullable: true, validators: [Validators.required, Validators.minLength(3)] });
-  public releaseDateCtrl = new FormControl<string>('', { nonNullable: false });
+  public releaseDateCtrl = new FormControl<string>('');
   private _dialogRef = inject(MatDialogRef<NewAlbumDialogComponent>);
 
   public onNoClick(): void {
@@ -41,6 +42,7 @@ export class NewAlbumDialogComponent {
   }
 
   public onAddClick(): void {
-    this._dialogRef.close({ artist: this.artistCtrl.value, title: this.titleCtrl.value, releaseDate: this.releaseDateCtrl.value });
+    console.log('Adding album', this.releaseDateCtrl.value);
+    // this._dialogRef.close({ artist: this.artistCtrl.value, title: this.titleCtrl.value, releaseDate: this.releaseDateCtrl.value });
   }
 }

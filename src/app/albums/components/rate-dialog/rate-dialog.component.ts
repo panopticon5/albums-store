@@ -38,7 +38,6 @@ export class RateDialogComponent {
 
   public onRateClick(): void {
     this._dialogRef.close(this.rate());
-    // Here you can handle the rating logic, e.g., send the rating back to the parent component
   }
 }
 

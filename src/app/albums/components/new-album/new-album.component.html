@@ -2,3 +2,7 @@
   <mat-icon>add</mat-icon>
   Add new album
 </button>
+
+@if (submitting()) {
+  <mat-progress-bar mode="query"></mat-progress-bar>
+}
