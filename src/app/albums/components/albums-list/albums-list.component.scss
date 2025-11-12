@@ -23,4 +23,10 @@ h3 {
 .list-item {
   display: flex; 
   padding: 8px;
+  align-items: anchor-center;
+}
+
+.rated {
+  display: flex;
+  gap: 12px;
 }

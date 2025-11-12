@@ -10,16 +10,18 @@ import { AsyncPipe, DatePipe } from '@angular/common';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { selectAlbumsLoading } from '../../store/albums.selectors';
 import { deleteAlbum, loadAlbums, rateAlbum } from '../../store/albums.actions';
-import { Album, AlbumStatus } from '../../models/album';
+import { Album } from '../../models/album';
 import { MatDialog } from '@angular/material/dialog';
 import { RateDialogComponent } from '../rate-dialog/rate-dialog.component';
+import { RangePipe } from '../../../utils/range.pipe';
 
 @Component({
   selector: 'albums-list',
   imports: [
     AsyncPipe, DatePipe,
-    MatIconModule, MatButtonModule, MatProgressBarModule, MatDividerModule, MatTooltipModule
-  ],
+    MatIconModule, MatButtonModule, MatProgressBarModule, MatDividerModule, MatTooltipModule,
+    RangePipe
+],
   templateUrl: './albums-list.component.html',
   styleUrl: './albums-list.component.scss'
 })

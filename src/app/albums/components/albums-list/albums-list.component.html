@@ -37,9 +37,16 @@
     @for (album of ratedAlbums$ | async; track album.id) {
         <div class="list-item" role="listitem">
 
-            <div class="title">
-                {{ album.artist }} - {{ album.title }} ({{ album.rating }}/5)
-                <div class="sub">Released on {{ album.releaseDate | date : 'mediumDate' }}</div>
+            <div class="rated title">
+                <div>
+                    <span>{{ album.artist }} - {{ album.title }}</span>
+                    <div class="sub">Released on {{ album.releaseDate | date : 'mediumDate' }}</div>
+                </div>
+                <div matTooltip="Rated {{ album.rating }}/5">
+                    @for (rating of album.rating | range; track $index) {
+                        <mat-icon color="primary">star</mat-icon>
+                    }
+                </div>
             </div>
 
             <button mat-icon-button color="warn" aria-label="Delete" matTooltip="Delete" (click)="openRemoveDialog(album.id)">
