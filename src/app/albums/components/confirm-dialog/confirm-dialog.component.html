@@ -1,0 +1,8 @@
+<h4 mat-dialog-title>Remove album?</h4>
+<mat-dialog-content>
+  <p>This will permanently remove the record {{ data.album.artist }} - {{ data.album.title }} from your database. This action cannot be undone.</p>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button matButton mat-dialog-close cdkFocusInitial>Discard</button>
+  <button mat-flat-button color="primary" (click)="onConfirmClick()">Delete record</button>
+</mat-dialog-actions>

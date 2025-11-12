@@ -14,6 +14,7 @@ import { Album } from '../../models/album';
 import { MatDialog } from '@angular/material/dialog';
 import { RateDialogComponent } from '../rate-dialog/rate-dialog.component';
 import { RangePipe } from '../../../utils/range.pipe';
+import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'albums-list',
@@ -21,7 +22,7 @@ import { RangePipe } from '../../../utils/range.pipe';
     AsyncPipe, DatePipe,
     MatIconModule, MatButtonModule, MatProgressBarModule, MatDividerModule, MatTooltipModule,
     RangePipe
-],
+  ],
   templateUrl: './albums-list.component.html',
   styleUrl: './albums-list.component.scss'
 })
@@ -56,13 +57,15 @@ export class AlbumsListComponent implements OnInit {
     });
   }
 
-  public openRemoveDialog(id: string): void {
-    const dialogRef = this._dialog.open(RateDialogComponent);
+  public openRemoveDialog(album: Album): void {
+    const dialogRef = this._dialog.open(ConfirmDialogComponent, {
+      data: { album },
+    });
 
     dialogRef.afterClosed().subscribe((confirm: boolean) => {
       console.log('Response received from dialog:', confirm);
       if(confirm) {
-        this._remove(id);
+        this._remove(album.id);
         this._snackBar.open('Album successfully removed from your list', 'Close', { duration: 2000 });
         console.log('Album removed');
       }
