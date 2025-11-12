@@ -7,6 +7,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { selectCounts, selectListeningAlbums, selectRatedAlbums, selectLatestAlbums, selectAlbumsError, selectAlbumsState } from '../../store/albums.selectors';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { AsyncPipe, DatePipe } from '@angular/common';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { selectAlbumsLoading } from '../../store/albums.selectors';
 import { deleteAlbum, loadAlbums, rateAlbum, updateStatus } from '../../store/albums.actions';
 import { Album, AlbumStatus } from '../../models/album';
@@ -25,6 +26,7 @@ import { RateDialogComponent } from '../rate-dialog/rate-dialog.component';
 export class AlbumsListComponent implements OnInit {
   private _store = inject(Store);
   private _dialog = inject(MatDialog);
+  private _snackBar = inject(MatSnackBar);
 
   public loading$ = this._store.select(selectAlbumsLoading);
   public counts$ = this._store.select(selectCounts);
@@ -42,10 +44,25 @@ export class AlbumsListComponent implements OnInit {
       data: { album },
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('Rating received from dialog:', result);
-      if(result) {
+    dialogRef.afterClosed().subscribe((rating: number) => {
+      console.log('Rating received from dialog:', rating);
+      if(rating) {
+        this._rate(album.id, rating);
+        this._snackBar.open('Album successfully rated', 'Close', { duration: 2000 });
         console.log('Rate submitted');
+      }
+    });
+  }
+
+  public openRemoveDialog(id: string): void {
+    const dialogRef = this._dialog.open(RateDialogComponent);
+
+    dialogRef.afterClosed().subscribe((confirm: boolean) => {
+      console.log('Response received from dialog:', confirm);
+      if(confirm) {
+        this._remove(id);
+        this._snackBar.open('Album successfully removed from your list', 'Close', { duration: 2000 });
+        console.log('Album removed');
       }
     });
   }
@@ -55,11 +72,11 @@ export class AlbumsListComponent implements OnInit {
     this._store.dispatch(updateStatus({ id, status }));
   }
 
-  public rate(id: string, rating: number) {
+  private _rate(id: string, rating: number): void {
     this._store.dispatch(rateAlbum({ id, rating }));
   }
 
-  public remove(id: string) {
+  private _remove(id: string): void {
     this._store.dispatch(deleteAlbum({ id }));
   }
 }

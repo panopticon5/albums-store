@@ -23,7 +23,7 @@
                     <mat-icon>star</mat-icon>
                 </button>
 
-                <button mat-icon-button color="warn" aria-label="Delete" (click)="remove(album.id)">
+                <button mat-icon-button color="warn" aria-label="Delete" (click)="openRemoveDialog(album.id)">
                     <mat-icon>delete</mat-icon>
                 </button>
             </div>
@@ -38,12 +38,12 @@
         <div class="list-item" role="listitem">
 
             <div class="title">
-                {{ album.title }}
+                {{ album.artist }} - {{ album.title }} ({{ album.rating }}/5)
                 <div class="sub">Released on {{ album.releaseDate | date : 'mediumDate' }}</div>
             </div>
 
-            <button mat-icon-button color="warn" aria-label="Delete" (click)="remove(album.id)">
-            <mat-icon>delete</mat-icon>
+            <button mat-icon-button color="warn" aria-label="Delete" (click)="openRemoveDialog(album.id)">
+                <mat-icon>delete</mat-icon>
             </button>
         </div>
     }
