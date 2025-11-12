@@ -4,12 +4,12 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { selectCounts, selectListeningAlbums, selectRatedAlbums, selectLatestAlbums, selectAlbumsError, selectAlbumsState } from '../../store/albums.selectors';
+import { selectCounts, selectListeningAlbums, selectRatedAlbums, selectLatestAlbums, selectAlbumsError } from '../../store/albums.selectors';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { AsyncPipe, DatePipe } from '@angular/common';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { selectAlbumsLoading } from '../../store/albums.selectors';
-import { deleteAlbum, loadAlbums, rateAlbum, updateStatus } from '../../store/albums.actions';
+import { deleteAlbum, loadAlbums, rateAlbum } from '../../store/albums.actions';
 import { Album, AlbumStatus } from '../../models/album';
 import { MatDialog } from '@angular/material/dialog';
 import { RateDialogComponent } from '../rate-dialog/rate-dialog.component';
@@ -65,11 +65,6 @@ export class AlbumsListComponent implements OnInit {
         console.log('Album removed');
       }
     });
-  }
-
-  public updateStatus(id: string) {
-    const status = 'done' as AlbumStatus;
-    this._store.dispatch(updateStatus({ id, status }));
   }
 
   private _rate(id: string, rating: number): void {

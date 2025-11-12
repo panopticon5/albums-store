@@ -26,20 +26,6 @@ export const addAlbumFailure = createAction(
   props<{ error: string }>()
 );
 
-// Update Status
-export const updateStatus = createAction(
-  '[Albums] Update Status',
-  props<{ id: string; status: AlbumStatus }>()
-);
-export const updateStatusSuccess = createAction(
-  '[Albums] Update Status Success',
-  props<{ id: string; status: AlbumStatus }>()
-);
-export const updateStatusFailure = createAction(
-  '[Albums] Update Status Failure',
-  props<{ error: string }>()
-);
-
 // Rate
 export const rateAlbum = createAction(
   '[Albums] Rate Album',

@@ -5,10 +5,11 @@ import { Album, AlbumStatus } from '../albums/models/album';
 @Injectable({ providedIn: 'root' })
 export class AlbumsService {
   private _data: Album[] = [];
+  private _mockedAlbums = [{ artist: 'Deftones', title: 'Koi No Yokan'}, { artist: 'Chat Pile', title: 'Cool World' }, { artist: 'Vega Trails', title: 'Tremors in the Static' }];
 
   public getAlbums(): Observable<Album[]> {
     if (this._data.length === 0) {
-      this._data = [0,1,2].map(i => this._generateAlbum(`Artist ${i + 1}`, `Title ${i + 1}`));
+      this._data = this._mockedAlbums.map(mockedAlbum => this._generateAlbum(mockedAlbum.artist, mockedAlbum.title));
     }
     console.log('data from api', this._data);
     return of(this._data).pipe(delay(400));
@@ -34,7 +35,7 @@ export class AlbumsService {
   public rate(payload: {id: string; rating: number}): Observable<{ id: string; changes: Partial<Album> }> {
     const selectedAlbum = this._data.find(a => a.id === payload.id);
     if (!selectedAlbum) return throwError(() => new Error('Album not found'));
-    const changes: Partial<Album> = { rating: payload.rating };
+    const changes: Partial<Album> = { rating: payload.rating, status: 'done' };
     this._data = this._data.map((a) => (a.id === selectedAlbum.id ? { ...a, ...changes } : a));
     return of({ id: payload.id, changes }).pipe(delay(200));
   }

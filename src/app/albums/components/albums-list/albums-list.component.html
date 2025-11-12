@@ -19,11 +19,11 @@
                     <div class="sub">Released on {{ album.releaseDate | date : 'mediumDate' }}</div>
                 </div>
 
-                <button mat-icon-button color="accent" aria-label="Rate" matTooltip="Rate it and mark it as done" (click)="openRateDialog(album)">
+                <button mat-icon-button color="accent" aria-label="Rate" matTooltip="Rate" (click)="openRateDialog(album)">
                     <mat-icon>star</mat-icon>
                 </button>
 
-                <button mat-icon-button color="warn" aria-label="Delete" (click)="openRemoveDialog(album.id)">
+                <button mat-icon-button color="warn" aria-label="Delete" matTooltip="Delete" (click)="openRemoveDialog(album.id)">
                     <mat-icon>delete</mat-icon>
                 </button>
             </div>
@@ -42,7 +42,7 @@
                 <div class="sub">Released on {{ album.releaseDate | date : 'mediumDate' }}</div>
             </div>
 
-            <button mat-icon-button color="warn" aria-label="Delete" (click)="openRemoveDialog(album.id)">
+            <button mat-icon-button color="warn" aria-label="Delete" matTooltip="Delete" (click)="openRemoveDialog(album.id)">
                 <mat-icon>delete</mat-icon>
             </button>
         </div>

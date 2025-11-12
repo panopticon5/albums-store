@@ -2,7 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, map, of, switchMap } from 'rxjs';
 import { AlbumsService } from '../../core/albums.service';
-import { addAlbum, addAlbumFailure, addAlbumSuccess, deleteAlbum, deleteAlbumFailure, deleteAlbumSuccess, loadAlbums, loadAlbumsFailure, loadAlbumsSuccess, rateAlbum, rateAlbumFailure, rateAlbumSuccess, updateStatus, updateStatusFailure, updateStatusSuccess } from './albums.actions';
+import { addAlbum, addAlbumFailure, addAlbumSuccess, deleteAlbum, deleteAlbumFailure, deleteAlbumSuccess, loadAlbums, loadAlbumsFailure, loadAlbumsSuccess, rateAlbum, rateAlbumFailure, rateAlbumSuccess } from './albums.actions';
 
 @Injectable({ providedIn: 'root' })
 export class AlbumsEffects {
@@ -32,19 +32,6 @@ export class AlbumsEffects {
       )
     )
   );
-
-  public updateStatus$ = createEffect(() =>
-    this._actions$.pipe(
-      ofType(updateStatus),
-      switchMap(({ id, status }) =>
-        this._api.updateStatus({ id, status }).pipe(
-          map(({ id }) => updateStatusSuccess({ id, status })),
-          catchError((err) => of(updateStatusFailure({ error: err.message ?? 'Update failed' })))
-        )
-      )
-    )
-  );
-
 
   public rateAlbum$ = createEffect(() =>
     this._actions$.pipe(

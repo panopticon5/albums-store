@@ -5,8 +5,7 @@ import {
   loadAlbums,
   loadAlbumsFailure,
   loadAlbumsSuccess,
-  rateAlbumSuccess,
-  updateStatusSuccess,
+  rateAlbumSuccess
 } from './albums.actions';
 import {
   createEntityAdapter,
@@ -44,11 +43,10 @@ export const albumsReducer = createReducer(
   // Add
   on(addAlbumSuccess, (state, { album }) => adapter.addOne(album, state)),
 
-  // Update status
-  on(updateStatusSuccess, (state, { id, status }) => adapter.updateOne({ id, changes: { status } }, state)),
-
   // Rate
-  on(rateAlbumSuccess, (state, { id, rating }) => adapter.updateOne({ id, changes: { rating } }, state)),
+  on(rateAlbumSuccess, (state, { id, rating }) =>
+    adapter.updateOne({ id, changes: { rating, status: 'done' } }, state)
+  ),
 
   // Remove
   on(deleteAlbum, (state, { id }) => adapter.removeOne(id, state))
