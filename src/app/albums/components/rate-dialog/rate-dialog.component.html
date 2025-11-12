@@ -8,5 +8,5 @@
 </mat-dialog-content>
 <mat-dialog-actions>
   <button matButton mat-dialog-close cdkFocusInitial>Discard</button>
-  <button mat-flat-button color="primary" (click)="onRateClick()">Rate</button>
+  <button mat-flat-button color="primary" (click)="onRateClick()" [disabled]="rate() === 0">Rate</button>
 </mat-dialog-actions>
