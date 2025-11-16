@@ -8,7 +8,7 @@
       <input matInput [formControl]="artistCtrl"/>
       @if (artistCtrl.invalid && (artistCtrl.dirty || artistCtrl.touched)) {
           <mat-error>
-          Artist is required (min 3).
+          Artist is required (min 3 characters).
           </mat-error>
       }
     </mat-form-field>
@@ -18,7 +18,7 @@
       <input matInput [formControl]="titleCtrl" />
       @if (titleCtrl.invalid && (titleCtrl.dirty || titleCtrl.touched)) {
           <mat-error>
-          Title is required (min 3).
+          Title is required (min 3 characters).
           </mat-error>
       }
     </mat-form-field>
@@ -34,5 +34,5 @@
 
 <mat-dialog-actions>
   <button matButton mat-dialog-close cdkFocusInitial>Discard</button>
-  <button mat-flat-button color="primary" (click)="onAddClick()">Add</button>
+  <button mat-flat-button color="primary" (click)="onAddClick()" [disabled]="titleCtrl.invalid || artistCtrl.invalid">Add</button>
 </mat-dialog-actions>
