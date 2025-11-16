@@ -15,13 +15,21 @@ import { MatDialog } from '@angular/material/dialog';
 import { RateDialogComponent } from '../rate-dialog/rate-dialog.component';
 import { RangePipe } from '../../../utils/range.pipe';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
+import { MatLabel, MatFormFieldModule } from "@angular/material/form-field";
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { MatInputModule } from '@angular/material/input';
+import { combineLatest, debounceTime, distinctUntilChanged, map, startWith } from 'rxjs';
 
 @Component({
   selector: 'albums-list',
   imports: [
     AsyncPipe, DatePipe,
     MatIconModule, MatButtonModule, MatProgressBarModule, MatDividerModule, MatTooltipModule,
-    RangePipe
+    RangePipe,
+    MatLabel,
+    MatFormFieldModule,
+    ReactiveFormsModule,
+    MatInputModule,
   ],
   templateUrl: './albums-list.component.html',
   styleUrl: './albums-list.component.scss'
@@ -31,12 +39,41 @@ export class AlbumsListComponent implements OnInit {
   private _dialog = inject(MatDialog);
   private _snackBar = inject(MatSnackBar);
 
+  public searchCtrl = new FormControl<string>('');
+
   public loading$ = this._store.select(selectAlbumsLoading);
   public counts$ = this._store.select(selectCounts);
   public listeningAlbums$ = this._store.select(selectListeningAlbums);
   public ratedAlbums$ = this._store.select(selectRatedAlbums);
   public latestAlbums$ = this._store.select(selectLatestAlbums);
   public error$ = this._store.select(selectAlbumsError);
+
+  private _search$ = this.searchCtrl.valueChanges.pipe(
+    startWith(''),
+    map((v) => (v ?? '').toString().trim().toLowerCase()),
+    debounceTime(250),
+    distinctUntilChanged()
+  );
+
+  public filteredListening$ = combineLatest([this.listeningAlbums$, this._search$]).pipe(
+    map(([albums, q]) =>
+      q ? albums.filter(a => (a.title + ' ' + a.artist).toLowerCase().includes(q)) : albums
+    )
+  );
+
+  public filteredRated$ = combineLatest([this.ratedAlbums$, this._search$]).pipe(
+    map(([albums, q]) =>
+      q ? albums.filter(a => (a.title + ' ' + a.artist).toLowerCase().includes(q)) : albums
+    )
+  );
+
+  public filteredCounts$ = combineLatest([this.filteredListening$, this.filteredRated$]).pipe(
+    map(([listening, rated]) => {
+      const total = listening.length + rated.length;
+      const ratedCount = rated.length;
+      return { total, rated: ratedCount, unrated: total - ratedCount };
+    })
+  );
 
   public ngOnInit(): void {
     this._store.dispatch(loadAlbums());
@@ -52,7 +89,6 @@ export class AlbumsListComponent implements OnInit {
       if(rating) {
         this._rate(album.id, rating);
         this._snackBar.open('Album successfully rated', 'Close', { duration: 2000 });
-        console.log('Rate submitted');
       }
     });
   }
@@ -67,7 +103,6 @@ export class AlbumsListComponent implements OnInit {
       if(confirm) {
         this._remove(album.id);
         this._snackBar.open('Album successfully removed from your list', 'Close', { duration: 2000 });
-        console.log('Album removed');
       }
     });
   }

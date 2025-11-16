@@ -30,3 +30,13 @@ h3 {
   display: flex;
   gap: 12px;
 }
+
+#search-field {
+  margin-top: 10px;
+}
+
+#controls {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+}
