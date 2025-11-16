@@ -52,5 +52,4 @@ export const albumsReducer = createReducer(
   on(deleteAlbum, (state, { id }) => adapter.removeOne(id, state))
 );
 
-// Expose adapter selectors (we’ll wire these in selectors file)
 export const { selectAll, selectEntities, selectIds, selectTotal } = adapter.getSelectors();

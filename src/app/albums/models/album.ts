@@ -1,10 +1,10 @@
 export type AlbumStatus = 'listening' | 'done';
 
 export interface Album {
-  id: string;          // e.g., uuid
+  id: string;
   artist: string;
   title: string;
   releaseDate: string;
   status: AlbumStatus;
-  rating: number | null;      // 0–5
+  rating: number | null;
 }
