@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, of, throwError, delay, map } from 'rxjs';
+import { Observable, of, throwError, delay } from 'rxjs';
 import { Album, AlbumStatus } from '../albums/models/album';
 
 @Injectable({ providedIn: 'root' })

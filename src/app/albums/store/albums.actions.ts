@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { Album, AlbumStatus } from '../models/album';
+import { Album } from '../models/album';
 
 // Load
 export const loadAlbums = createAction('[Albums] Load Albums');

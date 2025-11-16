@@ -43,9 +43,7 @@ ng serve
 ## Useful scripts
 - `ng serve` / `npm start` — run dev server
 - `ng build` / `npm run build` — build production bundle
-- `npm run lint` — run linter (if configured)
-
-(Exact npm script names depend on package.json — use `npm run` to list them.)
+- `ng lint` / `npm run lint` — run `angular-eslint`
 
 ## Notes for development / debugging
 - Store updates:
