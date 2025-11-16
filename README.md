@@ -1,59 +1,68 @@
-# AlbumsStore
+# Albums Store
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.0.4.
+Small Angular demo app that manages a list of albums (in-memory API).  
+Includes NgRx Store (actions, reducer, effects), a fake backend service, components for listing, adding and rating albums, and a small utility pipe.
 
-## Development server
+## Features
+- List albums (listening / rated)
+- Add album (pessimistic flow: UI updates when backend returns success)
+- Rate album (updates rating + status)
+- In-memory simulated backend (`core/albums.service.ts`)
+- NgRx: actions, reducer (entity adapter), selectors, effects
+- Simple search/filter support (component-local)
+- Range pipe for rendering rating stars
 
-To start a local development server, run:
+## Project layout (important folders)
+- `src/app/albums` — feature (components, models, store)
+  - `components/` — UI pieces (albums-list, new-album, dialogs...)
+  - `models/album.ts` — album model
+  - `store/` — NgRx actions/effects/reducer/selectors
+- `src/app/core/albums.service.ts` — simulated backend / in-memory API
+- `src/app/utils/range.pipe.ts` — helper pipe for star icons
 
+## Prerequisites
+- Node.js (`20.19`+ recommended)
+- npm
+- Angular CLI (optional, used for some developer commands)
+
+## Quick start
+
+1. Install dependencies
+```bash
+npm install
+```
+
+2. Run dev server
 ```bash
 ng serve
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+3. Open the app
+- Visit http://localhost:4200
 
-## Code scaffolding
+## Useful scripts
+- `ng serve` / `npm start` — run dev server
+- `ng build` / `npm run build` — build production bundle
+- `ng test` / `npm test` — run unit tests (if configured)
+- `npm run lint` — run linter (if configured)
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+(Exact npm script names depend on package.json — use `npm run` to list them.)
 
-```bash
-ng generate component component-name
-```
+## Notes for development / debugging
+- Store updates:
+  - The app uses a pessimistic add flow: an `addAlbum` action triggers an effect which calls the API and dispatches `addAlbumSuccess`. The reducer handles the success action to add the album to the store.
+  - If UI doesn't reflect updates, check actions in Redux DevTools and ensure reducer handles success actions and returns new immutable state.
+- IDs:
+  - Generated IDs are strings (timestamp + random digits) to avoid JS numeric-precision issues.
+- Searching:
+  - Implement search locally in the list component (FormControl + debounce) and combine with selectors, or add a selector factory / store field if you want global search state.
+- Rating stars:
+  - Use the provided `range` pipe to render N star icons: `*ngFor="let _ of (album.rating | range)"`
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+## Contributing
+- Open an issue / PR. Keep changes small and focused.
+- Prefer immutability in reducer updates (use the entity adapter helpers).
+- For optimistic updates, include a temporary client id and reconcile on success/failure.
 
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+## License
+MIT
