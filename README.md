@@ -1,6 +1,6 @@
 # Albums Store
 
-Small Angular demo app that manages a list of albums (in-memory API).  
+Small Angular app that manages a list of music albums.  
 Includes NgRx Store (actions, reducer, effects), a fake backend service, components for listing, adding and rating albums, and a small utility pipe.
 
 ## Features
@@ -43,7 +43,6 @@ ng serve
 ## Useful scripts
 - `ng serve` / `npm start` — run dev server
 - `ng build` / `npm run build` — build production bundle
-- `ng test` / `npm test` — run unit tests (if configured)
 - `npm run lint` — run linter (if configured)
 
 (Exact npm script names depend on package.json — use `npm run` to list them.)
@@ -65,4 +64,5 @@ ng serve
 - For optimistic updates, include a temporary client id and reconcile on success/failure.
 
 ## License
-MIT
+
+This project is provided for viewing and educational purposes only, see [license](https://github.com/panopticon5/albums-store?tab=License-1-ov-file#readme).
