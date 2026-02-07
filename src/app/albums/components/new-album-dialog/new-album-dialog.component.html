@@ -5,27 +5,31 @@
   <div id="forms-container">
     <mat-form-field appearance="outline">
       <mat-label>Artist</mat-label>
-      <input matInput [formControl]="artistCtrl"/>
-      @if (artistCtrl.invalid && (artistCtrl.dirty || artistCtrl.touched)) {
-          <mat-error>
-          Artist is required (min 3 characters).
-          </mat-error>
+      <input matInput [formField]="form.artist" />
+      @if (form.artist().invalid() && (form.artist().dirty() || form.artist().touched())) {
+      <mat-error>
+        @for (error of form.artist().errors(); track error.kind) {
+        <span>{{ error.message }}</span>
+        }
+      </mat-error>
       }
     </mat-form-field>
 
     <mat-form-field appearance="outline">
       <mat-label>Title</mat-label>
-      <input matInput [formControl]="titleCtrl" />
-      @if (titleCtrl.invalid && (titleCtrl.dirty || titleCtrl.touched)) {
-          <mat-error>
-          Title is required (min 3 characters).
-          </mat-error>
+      <input matInput [formField]="form.title" />
+      @if (form.title().invalid() && (form.title().dirty() || form.title().touched())) {
+      <mat-error>
+        @for (error of form.title().errors(); track error.kind) {
+        <span>{{ error.message }}</span>
+        }
+      </mat-error>
       }
     </mat-form-field>
 
     <mat-form-field appearance="outline">
       <mat-label>Release Date</mat-label>
-      <input matInput [matDatepicker]="picker" [formControl]="releaseDateCtrl" >
+      <input matInput [matDatepicker]="picker" [formField]="form.releaseDate">
       <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
       <mat-datepicker #picker></mat-datepicker>
     </mat-form-field>
@@ -34,5 +38,5 @@
 
 <mat-dialog-actions>
   <button matButton mat-dialog-close cdkFocusInitial>Discard</button>
-  <button mat-flat-button color="primary" (click)="onAddClick()" [disabled]="titleCtrl.invalid || artistCtrl.invalid">Add</button>
+  <button mat-flat-button color="primary" (click)="onAddClick()" [disabled]="form().invalid()">Add</button>
 </mat-dialog-actions>

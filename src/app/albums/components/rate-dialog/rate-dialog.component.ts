@@ -31,8 +31,6 @@ import { form, FormField, max, min } from '@angular/forms/signals';
 })
 export class RateDialogComponent {
   public readonly data = inject<DialogData>(MAT_DIALOG_DATA);
-  // public readonly rate = model(this.data.album.rating || 0);
-
   public rateModel = signal<number>(this.data.album.rating || 0);
   public rateForm = form(this.rateModel, (f) => {
     min(f, 1,  {message: 'Minimum rating is 1'});
