@@ -41,10 +41,10 @@ export class AlbumsListComponent implements OnInit {
   private _dialog = inject(MatDialog);
   private _snackBar = inject(MatSnackBar);
 
-  public searchModel = signal<SearchData>({ query: '' });
+  public searchModel = signal('');
 
-  public form = form(this.searchModel, (path) => {
-    debounce(path.query, 250);
+  public searchForm = form(this.searchModel, (path) => {
+    debounce(path, 250);
   });
 
   public loading = toSignal(this._store.select(selectAlbumsLoading));
@@ -55,7 +55,7 @@ export class AlbumsListComponent implements OnInit {
   public error = toSignal(this._store.select(selectAlbumsError));
 
   private _search = computed(() =>
-    (this.form.query().value() ?? '').toString().trim().toLowerCase()
+    (this.searchForm().value() ?? '').toString().trim().toLowerCase()
   );
 
   public filteredListening = computed(() => {
@@ -119,8 +119,4 @@ export class AlbumsListComponent implements OnInit {
   private _remove(id: string): void {
     this._store.dispatch(deleteAlbum({ id }));
   }
-}
-
-interface SearchData {
-  query: string;
 }
