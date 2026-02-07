@@ -43,8 +43,8 @@ export class AlbumsListComponent implements OnInit {
 
   public searchModel = signal('');
 
-  public searchForm = form(this.searchModel, (path) => {
-    debounce(path, 250);
+  public searchForm = form(this.searchModel, (f) => {
+    debounce(f, 250);
   });
 
   public loading = toSignal(this._store.select(selectAlbumsLoading));
