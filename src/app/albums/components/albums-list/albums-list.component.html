@@ -1,15 +1,15 @@
-@if (loading$ | async) {
+@if (loading()) {
   <mat-progress-bar mode="indeterminate"></mat-progress-bar>
 }
 
 <div id="controls">
     <mat-form-field appearance="outline" id="search-field">
     <mat-label>Search</mat-label>
-    <input matInput placeholder="Artist or album title" [formControl]="searchCtrl" />
+    <input matInput placeholder="Artist or album title" [formField]="form.query" />
     <mat-icon matSuffix>search</mat-icon>
     </mat-form-field>
 
-    @if (filteredCounts$ | async; as count) {
+    @if (filteredCounts(); as count) {
     <div class="counts">
     <strong>Total:</strong> {{ count.total }} • <strong>Active:</strong> {{ count.unrated }} •
     <strong>Completed:</strong> {{ count.rated }}
@@ -19,7 +19,7 @@
 
 <h3>Listening</h3>
 <div role="list">
-        @for (album of filteredListening$ | async; track album.id) {
+        @for (album of filteredListening(); track album.id) {
             <div class="list-item" role="listitem">
                 <div class="title">
                     {{ album.artist }} - {{ album.title }}
@@ -41,7 +41,7 @@
 
 <h3>Rated</h3>
 <div role="list">
-    @for (album of filteredRated$ | async; track album.id) {
+    @for (album of filteredRated(); track album.id) {
         <div class="list-item" role="listitem">
 
             <div class="rated title">

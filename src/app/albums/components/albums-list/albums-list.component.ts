@@ -1,4 +1,5 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, computed, inject, signal } from '@angular/core';
+import { form, debounce, FormField } from '@angular/forms/signals';
 import { Store } from '@ngrx/store';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
@@ -6,7 +7,7 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { selectCounts, selectListeningAlbums, selectRatedAlbums, selectLatestAlbums, selectAlbumsError } from '../../store/albums.selectors';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { AsyncPipe, DatePipe } from '@angular/common';
+import { DatePipe } from '@angular/common';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { selectAlbumsLoading } from '../../store/albums.selectors';
 import { deleteAlbum, loadAlbums, rateAlbum } from '../../store/albums.actions';
@@ -16,21 +17,22 @@ import { RateDialogComponent } from '../rate-dialog/rate-dialog.component';
 import { RangePipe } from '../../../utils/range.pipe';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 import { MatLabel, MatFormFieldModule } from "@angular/material/form-field";
-import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
-import { combineLatest, debounceTime, distinctUntilChanged, map, startWith } from 'rxjs';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'albums-list',
   imports: [
-    AsyncPipe, DatePipe,
+    DatePipe,
     MatIconModule, MatButtonModule, MatProgressBarModule, MatDividerModule, MatTooltipModule,
     RangePipe,
     MatLabel,
     MatFormFieldModule,
     ReactiveFormsModule,
     MatInputModule,
-  ],
+    FormField
+],
   templateUrl: './albums-list.component.html',
   styleUrl: './albums-list.component.scss'
 })
@@ -39,41 +41,44 @@ export class AlbumsListComponent implements OnInit {
   private _dialog = inject(MatDialog);
   private _snackBar = inject(MatSnackBar);
 
-  public searchCtrl = new FormControl<string>('');
+  public searchModel = signal<SearchData>({ query: '' });
 
-  public loading$ = this._store.select(selectAlbumsLoading);
-  public counts$ = this._store.select(selectCounts);
-  public listeningAlbums$ = this._store.select(selectListeningAlbums);
-  public ratedAlbums$ = this._store.select(selectRatedAlbums);
-  public latestAlbums$ = this._store.select(selectLatestAlbums);
-  public error$ = this._store.select(selectAlbumsError);
+  public form = form(this.searchModel, (path) => {
+    debounce(path.query, 250);
+  });
 
-  private _search$ = this.searchCtrl.valueChanges.pipe(
-    startWith(''),
-    map((v) => (v ?? '').toString().trim().toLowerCase()),
-    debounceTime(250),
-    distinctUntilChanged()
+  public loading = toSignal(this._store.select(selectAlbumsLoading));
+  public counts = toSignal(this._store.select(selectCounts));
+  public listeningAlbums = toSignal(this._store.select(selectListeningAlbums));
+  public ratedAlbums = toSignal(this._store.select(selectRatedAlbums));
+  public latestAlbums = toSignal(this._store.select(selectLatestAlbums));
+  public error = toSignal(this._store.select(selectAlbumsError));
+
+  private _search = computed(() =>
+    (this.form.query().value() ?? '').toString().trim().toLowerCase()
   );
 
-  public filteredListening$ = combineLatest([this.listeningAlbums$, this._search$]).pipe(
-    map(([albums, q]) =>
-      q ? albums.filter(a => (a.title + ' ' + a.artist).toLowerCase().includes(q)) : albums
-    )
+  public filteredListening = computed(() => {
+    const listening = this.listeningAlbums();
+    const q = this._search();
+    return q ? listening?.filter(a => (a.title + ' ' + a.artist).toLowerCase().includes(q)) : listening;
+  }
   );
 
-  public filteredRated$ = combineLatest([this.ratedAlbums$, this._search$]).pipe(
-    map(([albums, q]) =>
-      q ? albums.filter(a => (a.title + ' ' + a.artist).toLowerCase().includes(q)) : albums
-    )
+  public filteredRated = computed(() => {
+    const rated = this.ratedAlbums();
+    const q = this._search();
+    return q ? rated?.filter(a => (a.title + ' ' + a.artist).toLowerCase().includes(q)) : rated;
+  }
   );
 
-  public filteredCounts$ = combineLatest([this.filteredListening$, this.filteredRated$]).pipe(
-    map(([listening, rated]) => {
-      const total = listening.length + rated.length;
-      const ratedCount = rated.length;
-      return { total, rated: ratedCount, unrated: total - ratedCount };
-    })
-  );
+  public filteredCounts = computed(() => {
+    const listening = this.filteredListening();
+    const rated = this.filteredRated();
+    const total = (listening?.length ?? 0) + (rated?.length ?? 0);
+    const ratedCount = rated?.length ?? 0;
+    return { total, rated: ratedCount, unrated: total - ratedCount };
+  });
 
   public ngOnInit(): void {
     this._store.dispatch(loadAlbums());
@@ -86,7 +91,7 @@ export class AlbumsListComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((rating: number) => {
       console.log('Rating received from dialog:', rating);
-      if(rating) {
+      if (rating) {
         this._rate(album.id, rating);
         this._snackBar.open('Album successfully rated', 'Close', { duration: 2000 });
       }
@@ -100,7 +105,7 @@ export class AlbumsListComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((confirm: boolean) => {
       console.log('Response received from dialog:', confirm);
-      if(confirm) {
+      if (confirm) {
         this._remove(album.id);
         this._snackBar.open('Album successfully removed from your list', 'Close', { duration: 2000 });
       }
@@ -114,4 +119,8 @@ export class AlbumsListComponent implements OnInit {
   private _remove(id: string): void {
     this._store.dispatch(deleteAlbum({ id }));
   }
+}
+
+interface SearchData {
+  query: string;
 }
