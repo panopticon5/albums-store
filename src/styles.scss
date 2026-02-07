@@ -3,6 +3,7 @@
 
 html {
   color-scheme: light;
+  height: 100%;
   @include mat.theme((
     color: mat.$blue-palette,
     typography: Roboto,
@@ -15,7 +16,5 @@ body {
   color: var(--mat-sys-on-surface);
   font: var(--mat-sys-body-medium);
   margin: 0;
+  height: 100%;
 }
-
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
