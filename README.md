@@ -56,11 +56,6 @@ ng serve
 - Rating stars:
   - Use the provided `range` pipe to render N star icons: `*ngFor="let _ of (album.rating | range)"`
 
-## Contributing
-- Open an issue / PR. Keep changes small and focused.
-- Prefer immutability in reducer updates (use the entity adapter helpers).
-- For optimistic updates, include a temporary client id and reconcile on success/failure.
-
 ## License
 
 This project is provided for viewing and educational purposes only, see [license](https://github.com/panopticon5/albums-store?tab=License-1-ov-file#readme).
